@@ -1,24 +1,27 @@
 from flask import Blueprint, render_template, request
 
-from .. import _TOKEN_SPECIAL
-from ..core import Authentication
+from ..controllers import home_controller, login_controller
+from ..core import _Authentication, password_cryptography
 
 routes = Blueprint('routes', __name__)
+
+_auth = _Authentication()
 
 
 @routes.route('/')
 def root():
-    return "ola"
+    return render_template('index.html')
+
+
+@routes.route('/login', methods=['POST'])
+def login():
+    _pass = password_cryptography(request.form['password'])
+
+    form = {'name': request.form['name'], 'password': _pass}
+
+    return login_controller(auth=_auth, form=form)
 
 
 @routes.route("/home")
 def home():
-    _auth = Authentication()
-
-    if _TOKEN_SPECIAL in request.cookies and (
-        session := _auth.is_token_in_session(_TOKEN_SPECIAL)
-    ):
-        user, *_ = session  # type: ignore
-        return render_template("home.html", user=user)
-
-    return render_template('error.html')
+    return home_controller(auth=_auth, cookies=request.cookies)
