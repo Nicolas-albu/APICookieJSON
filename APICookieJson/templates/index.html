@@ -1,9 +1,32 @@
-<form action="/login" method="post">
-    <label for="name">Nome:</label>
-    <input type="text" name="name"><br>
+{% extends "layout.html" %} {% block main %}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <!-- Adicione uma borda e uma cor de fundo ao formulário -->
+      <form action="/login" method="post" class="border rounded p-4 bg-light">
+        <div class="form-group">
+          <label for="username">Nome:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="username"
+            name="username"
+          />
+        </div>
 
-    <label for="password">Senha:</label>
-    <input type="password" name="password"><br>
+        <div class="form-group">
+          <label for="password">Senha:</label>
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            name="password"
+          />
+        </div>
 
-    <input type="submit" value="Enviar">
-</form>
+        <button type="submit" class="btn btn-primary">Enviar</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
